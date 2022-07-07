@@ -1,11 +1,15 @@
-import React,{useEffect} from "react";
-import { Link ,useLocation} from "react-router-dom";
+import React from "react";
+import { Link ,useLocation, useNavigate} from "react-router-dom";
 
 const NavBar = () => {
   let location=useLocation();
-  useEffect(()=>{
-    
-  },[location])
+  let navigate = useNavigate();
+
+  const handleLogout=()=>{
+    localStorage.removeItem('token');
+    navigate('/login')
+  }
+  
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -37,17 +41,10 @@ const NavBar = () => {
                 </Link>
               </li>
             </ul>
-            <form className="d-flex" role="search">
-              <input
-                className="form-control me-2"
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-              />
-              <button className="btn btn-outline-success" type="submit">
-                Search
-              </button>
-            </form>
+            {!localStorage.getItem('token')?<div className="d-flex">
+            <Link className="btn btn-primary mx-1" to="/login" role="button">Login</Link>
+            <Link className="btn btn-primary mx-1" to="/signUp" role="button">SignUp</Link>
+            </div>:<button className="btn btn-primary"onClick={handleLogout}>Logout</button> }
           </div>
         </div>
       </nav>
